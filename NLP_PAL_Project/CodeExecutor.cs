@@ -82,13 +82,13 @@ namespace NLP_PAL_Project
         }
         public string ExecuteRubyCode(string sourceCode)
         {
-            string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
+            string codePath = Path.Combine(Path.GetTempPath(), "TempRubyScript.rb");
             File.WriteAllText(codePath, sourceCode);
-            Process pythonProcess = new Process
+            Process rubyProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "python",
+                    FileName = "ruby",
                     Arguments = codePath,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -96,13 +96,12 @@ namespace NLP_PAL_Project
                     CreateNoWindow = true
                 }
             };
+            rubyProcess.Start();
+            string runOutput = rubyProcess.StandardOutput.ReadToEnd();
+            string runError = rubyProcess.StandardError.ReadToEnd();
+            rubyProcess.WaitForExit();
 
-            pythonProcess.Start();
-            string runOutput = pythonProcess.StandardOutput.ReadToEnd();
-            string runError = pythonProcess.StandardError.ReadToEnd();
-            pythonProcess.WaitForExit();
-
-            if (pythonProcess.ExitCode != 0)
+            if (rubyProcess.ExitCode != 0)
             {
                 // Execution failed
                 Console.WriteLine(runError);

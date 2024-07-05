@@ -28,46 +28,13 @@ namespace NLP_PAL_Project
             CodeExecutor codeExecutor= new CodeExecutor();
             string pythonCode = "print(\"this is python code\")";
             string JSCode = "console.log('this is java script code');";
-            string CSharpCode1 = @"
-        using System;
-
-        public class Program
-        {
-            public static void Main()
-            {
-                Console.WriteLine(""This is C# code"");
-            }
-        }
-        Program.Main();
-    ";
-            string CSharpCode2 = @"
-        using System;
-
-        public class Program
-        {
-            public static void Main()
-            {
-                Console.WriteLine(""This is C# code with only main"");
-            }
-        }
-    ";
-            string CSharpCode = @"
-            using System;
-            string str=""This is C# script""; 
-            Console.WriteLine(str);
-    ";
-          //  for (int i = 0; i < 5; i++)
-         //   {
-               // string CSharpOutput = await codeExecutor.ExecuteCSharpCodeWithRoslyn(CSharpCode2);
-                string CSharpOutput2 = await codeExecutor.ExecuteCSharpCodeWithRoslyn(CSharpCode2);
-                string pythonOutput = codeExecutor.ExecutePythonCode(pythonCode);
-                 string JSOutput = codeExecutor.ExecuteJavaScriptCode(JSCode);
-              //  Console.WriteLine(CSharpOutput);
-        //        Console.WriteLine(CSharpOutput2);
-
-                // Console.WriteLine(JSOutput);
-                // Console.WriteLine(pythonOutput);
-        //    }
+            string RubyCode = "print \"This is ruby code\"";
+            string pythonOutput = codeExecutor.ExecutePythonCode(pythonCode);
+            string JSOutput = codeExecutor.ExecuteJavaScriptCode(JSCode);
+            string RubyOutput = codeExecutor.ExecuteRubyCode(RubyCode);
+            Console.WriteLine(JSOutput);
+            Console.WriteLine(pythonOutput);
+            Console.WriteLine(RubyOutput);
             // Get answers from compilers and give scores to languages
 
             // Graphs, stats, etc.
