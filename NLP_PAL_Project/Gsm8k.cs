@@ -5,7 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLP_PAL_Project.Models;
-
+using System.Text.Json;
 namespace NLP_PAL_Project
 {
     public class Gsm8k
@@ -20,7 +20,7 @@ namespace NLP_PAL_Project
                 while (!reader.EndOfStream)
                 {
                     string line = await reader.ReadLineAsync();
-                    var data = JsonSerializer.Deserialize<Dictionary<string, string>>(line);
+                    var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(line);
                     questionObjs.Add(new QuestionObj(id++, data["question"], data["answer"]));
                 }
             }

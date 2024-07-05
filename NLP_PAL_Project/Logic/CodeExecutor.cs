@@ -20,7 +20,7 @@ namespace NLP_PAL_Project.Logic
             sucessRatio.Add("Python", new Tuple<int, int>(0, 0));
             sucessRatio.Add("Ruby", new Tuple<int, int>(0, 0));
         }
-        public string ExecutePythonCode(string sourceCode)
+        public async Task<string> ExecutePythonCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
             File.WriteAllText(codePath, sourceCode);
@@ -51,7 +51,7 @@ namespace NLP_PAL_Project.Logic
             File.Delete(codePath);
             return runOutput;
         }
-        public string ExecuteJavaScriptCode(string sourceCode)
+        public async Task<string> ExecuteJavaScriptCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempJavaScript.js");
             File.WriteAllText(codePath, sourceCode);
@@ -82,7 +82,7 @@ namespace NLP_PAL_Project.Logic
             File.Delete(codePath);
             return runOutput;
         }
-        public string ExecuteRubyCode(string sourceCode)
+        public async Task<string> ExecuteRubyCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempRubyScript.rb");
             File.WriteAllText(codePath, sourceCode);

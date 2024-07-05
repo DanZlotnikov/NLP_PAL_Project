@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLP_PAL_Project", "NLP_PAL_Project\NLP_PAL_Project.csproj", "{C1041B1B-C52F-4CD3-BBFA-DE8150AC0637}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD3CA71E-D76B-4F21-B91E-156D67658A72}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03003E95-88C8-466C-9C90-6AB2FD0DA1C5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
