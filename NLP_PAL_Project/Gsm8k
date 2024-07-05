@@ -1,4 +1,12 @@
-    public class QuestionObj
+using System;
+using NLP_PAL_Project.Models;
+
+namespace NLP_PAL_Project
+{
+    class Gsm8k
+    {
+
+public class QuestionObj
     {
         public int Id { get; set; }
         public string Intro { get; set; }
@@ -6,8 +14,9 @@
         public string ExampleAnswer { get; set; }
         public string RealQuestion { get; set; }
     }
-}
-     public static async Task<List<QuestionObj>> ReadQuestionsFromJsonAsync(string filePath)
+
+   
+public static async Task<List<QuestionObj>> ReadQuestionsFromJsonAsync(string filePath)
         {
             List<QuestionObj> questionObjs = new List<QuestionObj>();
 
@@ -35,3 +44,8 @@
 
             return questionObjs;
         }
+
+}
+
+}
+
