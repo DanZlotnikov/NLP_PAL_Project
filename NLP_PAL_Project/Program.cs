@@ -10,7 +10,7 @@ namespace NLP_PAL_Project
         {
             Consts.Init();
             // Read all prompt data - Bar
-            List<QuestionObj> questionObjs = await ReadQuestionsFromJsonAsync("/mnt/data/test.jsonl");
+            List<QuestionObj> questionObjs = await ReadQuestionsFromJsonAsync("test.jsonl");
          
 
             AILogic AI = new CohereLogic();
