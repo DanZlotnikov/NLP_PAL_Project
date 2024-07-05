@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Text.Json;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NLP_PAL_Project.Models;
 using System.Text.Json;
 namespace NLP_PAL_Project
