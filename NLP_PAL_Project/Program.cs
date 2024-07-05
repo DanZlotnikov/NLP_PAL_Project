@@ -1,4 +1,6 @@
-﻿using NLP_PAL_Project.Models;
+﻿using System;
+
+using NLP_PAL_Project.Models;
 
 namespace NLP_PAL_Project
 {  
@@ -6,7 +8,7 @@ namespace NLP_PAL_Project
     {
         public static async Task Main(string[] args)
         {
-            Consts.Init();
+            //Consts.Init();
             // Read all prompt data - Bar
             List<QuestionObj> questionObjs = new List<QuestionObj> {
                 new QuestionObj
@@ -19,13 +21,40 @@ namespace NLP_PAL_Project
                 }
             };
 
-            dynamic[] codeSnippets = await GptLogic.GeneratePalAnswers(questionObjs);
+            //dynamic[] codeSnippets = await GptLogic.GeneratePalAnswers(questionObjs);
 
             // Execute code on compilers - Denis
+            
+            CodeExecutor codeExecutor= new CodeExecutor();
+            string pythonCode = "print(\"this is python code\")";
+            string JSCode = "console.log('this is java script code');";
+            string CSharpCode = @"
+        using System;
 
+        public class Program
+        {
+            public static string Main()
+            {
+                return ""This is C# code"";
+            }
+        }
+        Program.Main();
+    ";
+            string CSharpOutput = await codeExecutor.ExecuteCSharpCode(CSharpCode);
+            Console.WriteLine(CSharpOutput);
+            string pythonOutput= codeExecutor.ExecutePythonCode(pythonCode);
+            string JSOutput = codeExecutor.ExecuteJavaScriptCode(JSCode);
+            Console.WriteLine(JSOutput);
+            Console.WriteLine(pythonOutput);
             // Get answers from compilers and give scores to languages
 
             // Graphs, stats, etc.
+
+
+
+
+
+
         }
     }
 }
