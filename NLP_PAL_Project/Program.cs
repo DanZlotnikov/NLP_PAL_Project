@@ -10,13 +10,8 @@ namespace NLP_PAL_Project
         {
             Consts.Init();
             // Read all prompt data - Bar
-            List<QuestionObj> questionObjs = new List<QuestionObj> {
-                new QuestionObj
-                {
-                    Id = 1,
-                    RealQuestion= "Jason had 20 lollipops. He gave Denny some lollipops. Now Jason has 12 lollipops. How many lollipops did Jason give to Denny?",
-                }
-            };
+            List<QuestionObj> questionObjs = await ReadQuestionsFromJsonAsync("/mnt/data/test.jsonl");
+         
 
             AILogic AI = new CohereLogic();
             dynamic[] codeSnippets = await AI.GeneratePalAnswers(questionObjs);
