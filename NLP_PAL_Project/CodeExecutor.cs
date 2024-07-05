@@ -8,6 +8,11 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Reflection;
+using Microsoft.CodeAnalysis;
 
 namespace NLP_PAL_Project
 {
@@ -75,23 +80,71 @@ namespace NLP_PAL_Project
             File.Delete(codePath);
             return runOutput;
         }
-        public async Task<string> ExecuteCSharpCode(string sourceCode)
+        public string ExecuteRubyCode(string sourceCode)
         {
+            string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
+            File.WriteAllText(codePath, sourceCode);
+            Process pythonProcess = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "python",
+                    Arguments = codePath,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            pythonProcess.Start();
+            string runOutput = pythonProcess.StandardOutput.ReadToEnd();
+            string runError = pythonProcess.StandardError.ReadToEnd();
+            pythonProcess.WaitForExit();
+
+            if (pythonProcess.ExitCode != 0)
+            {
+                // Execution failed
+                Console.WriteLine(runError);
+                return "Execution failed:\n" + runError;
+            }
+            File.Delete(codePath);
+            return runOutput;
+        }
+        public async Task<string> ExecuteCSharpCodeWithRoslyn(string sourceCode)
+        {
+           //Doesn't work, can't redirect STDOUT so can't anlyze code answer
             try
             {
-                ScriptOptions scriptOptions = ScriptOptions.Default.WithReferences(AppDomain.CurrentDomain.GetAssemblies())
-                .WithImports("System", "System.Linq", "System.Collections.Generic");
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                  .Where(assembly => !string.IsNullOrEmpty(assembly.Location))
+                  .Select(assembly => MetadataReference.CreateFromFile(assembly.Location));
+
+                ScriptOptions scriptOptions = ScriptOptions.Default
+                    .WithReferences(assemblies)
+                    .WithImports("System");
+
+                // Execute the initial script
+                 var script = CSharpScript.Create(sourceCode, scriptOptions);
                 string result = await CSharpScript.EvaluateAsync<string>(sourceCode, scriptOptions);
+
+                // Check if Main method needs to be called explicitly
+                if (result == null)
+                {
+                    result = await CSharpScript.EvaluateAsync<string>(sourceCode + "\nProgram.Main();", scriptOptions);
+                }
+
                 return result;
             }
-            catch(CompilationErrorException e)
+            catch (CompilationErrorException e)
             {
-                return "Compilation error: " + e.Message;
+                return "Compilation error";
             }
             catch (Exception e)
             {
-                return "Execution error: " + e.Message;
+                return "Execution error";
             }
+
         }
     }
 
