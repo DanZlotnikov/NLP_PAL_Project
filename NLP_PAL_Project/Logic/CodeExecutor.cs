@@ -11,16 +11,12 @@ namespace NLP_PAL_Project.Logic
 {
     internal class CodeExecutor
     {
-        public Dictionary<string, Tuple<int, int>> sucessRatio;
 
         public CodeExecutor()
         {
-            sucessRatio= new Dictionary<string, Tuple<int, int>>(); //first: correct answers count, second: wrong answers count
-            sucessRatio.Add("Java Script", new Tuple<int, int>(0, 0));
-            sucessRatio.Add("Python", new Tuple<int, int>(0, 0));
-            sucessRatio.Add("Ruby", new Tuple<int, int>(0, 0));
+           
         }
-        public async Task<string> ExecutePythonCode(string sourceCode)
+        public async Task<(string, Boolean)> ExecutePythonCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
             File.WriteAllText(codePath, sourceCode);
@@ -46,12 +42,12 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return "Execution failed:\n" + runError;
+                return ("Execution failed:\n" + runError, true);
             }
             File.Delete(codePath);
-            return runOutput;
+            return (runOutput,false);
         }
-        public async Task<string> ExecuteJavaScriptCode(string sourceCode)
+        public async Task<(string, Boolean)> ExecuteJavaScriptCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempJavaScript.js");
             File.WriteAllText(codePath, sourceCode);
@@ -77,12 +73,12 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return "Execution failed:\n" + runError;
+                return ("Execution failed:\n" + runError, true);
             }
             File.Delete(codePath);
-            return runOutput;
+            return (runOutput, false);
         }
-        public async Task<string> ExecuteRubyCode(string sourceCode)
+        public async Task<(string, Boolean)> ExecuteRubyCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempRubyScript.rb");
             File.WriteAllText(codePath, sourceCode);
@@ -107,10 +103,10 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return "Execution failed:\n" + runError;
+                return ("Execution failed:\n" + runError, true);
             }
             File.Delete(codePath);
-            return runOutput;
+            return (runOutput, false);
         }
         public async Task<string> ExecuteCSharpCodeWithRoslyn(string sourceCode)
         {
