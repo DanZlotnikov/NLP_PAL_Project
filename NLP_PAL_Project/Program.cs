@@ -14,8 +14,6 @@ namespace NLP_PAL_Project
                 new QuestionObj
                 {
                     Id = 1,
-                    ExampleQuestion = ,
-                    ExampleAnswer = ,
                     RealQuestion= "Jason had 20 lollipops. He gave Denny some lollipops. Now Jason has 12 lollipops. How many lollipops did Jason give to Denny?",
                 }
             };
