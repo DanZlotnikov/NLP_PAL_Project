@@ -1,7 +1,5 @@
-﻿using System;
-using NLP_PAL_Project.Logic;
+﻿using NLP_PAL_Project.Logic;
 using NLP_PAL_Project.Models;
-
 namespace NLP_PAL_Project
 {
     class Program
@@ -10,7 +8,7 @@ namespace NLP_PAL_Project
         {
             Consts.Init();
             // Read all prompt data - Bar
-            List<QuestionObj> questionObjs = await ReadQuestionsFromJsonAsync("test.jsonl");
+            List<QuestionObj> questionObjs = await NLP_PAL_Project.Gsm8k.ReadQuestionsFromJsonAsync("test.jsonl");
          
 
             AILogic AI = new CohereLogic();
