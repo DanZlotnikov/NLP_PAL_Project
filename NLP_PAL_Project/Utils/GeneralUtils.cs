@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace NLP_PAL_Project
+namespace NLP_PAL_Project.Utils
 {
-    public class Utils
+    public class GeneralUtils
     {
         public async static Task<dynamic> MakeRequest(HttpMethod method, string url, dynamic stringContent = null)
         {

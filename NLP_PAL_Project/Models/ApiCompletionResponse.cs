@@ -1,6 +1,6 @@
 namespace NLP_PAL_Project.Models
 {
-    public class GptCompletionResponse
+    public class ApiCompletionResponse
     {
         public string Id { get; set; }
         public string Content { get; set; }

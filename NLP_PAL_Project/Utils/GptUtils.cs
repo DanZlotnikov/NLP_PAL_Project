@@ -2,7 +2,7 @@
 using System.Data;
 using System.Text;
 
-namespace NLP_PAL_Project
+namespace NLP_PAL_Project.Utils.Utils
 {
     public class GptUtils
     {

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace NLP_PAL_Project.Models
 {
-    public class QuestionObj
+    public class CohereRequestMessageObject
     {
-        public int Id { get; set; }
-        public string RealQuestion { get; set; }
-        public string RealAnswer { get; set; }
+        public string role { get; set; }
+        public string message { get; set; }
     }
 }
