@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
@@ -14,7 +7,7 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 
-namespace NLP_PAL_Project
+namespace NLP_PAL_Project.Logic
 {
     internal class CodeExecutor
     {
@@ -79,7 +72,7 @@ namespace NLP_PAL_Project
             string runOutput = JSProcess.StandardOutput.ReadToEnd();
             string runError = JSProcess.StandardError.ReadToEnd();
             JSProcess.WaitForExit();
-            
+
             if (JSProcess.ExitCode != 0)
             {
                 // Execution failed
