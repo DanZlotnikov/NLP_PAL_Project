@@ -20,10 +20,10 @@ namespace NLP_PAL_Project
             foreach (QuestionObj questionObj in questionObjs)
             {
                 CodeExecutor codeExecutor= new CodeExecutor();
-                string PythonOutput = await codeExecutor.ExecutePythonCode("print(1)");
+                string PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
                 string RubyOutput = await codeExecutor.ExecuteRubyCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
                 string JSOutput = await codeExecutor.ExecuteJavaScriptCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
-                Console.WriteLine($"python: {PythonOutput} \nruby: {RubyOutput}, \njs: {JSOutput}");
+                Console.WriteLine($"python: {PythonOutput} \nruby: {RubyOutput} \njs: {JSOutput}");
             }
             Console.ReadLine();
             // Get answers from compilers and give scores to languages

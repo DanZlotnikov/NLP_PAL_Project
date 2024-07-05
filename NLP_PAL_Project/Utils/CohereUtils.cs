@@ -26,6 +26,14 @@ namespace NLP_PAL_Project.Utils
             history = new List<CohereRequestMessageObject> {
                new CohereRequestMessageObject {
                    role = "USER",
+                   message = Consts.UserIntro
+               },
+               new CohereRequestMessageObject {
+                   role = "CHATBOT",
+                   message = Consts.BotIntro
+               },
+               new CohereRequestMessageObject {
+                   role = "USER",
                    message = string.Format($"{questionObj.ExampleQuestion} \n\n")
                },
                new CohereRequestMessageObject {
