@@ -1,11 +1,25 @@
 ﻿using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Reflection;
+using Microsoft.CodeAnalysis;
 
 namespace NLP_PAL_Project.Logic
 {
     internal class CodeExecutor
     {
+        public Dictionary<string, Tuple<int, int>> sucessRatio;
+
+        public CodeExecutor()
+        {
+            sucessRatio= new Dictionary<string, Tuple<int, int>>(); //first: correct answers count, second: wrong answers count
+            sucessRatio.Add("Java Script", new Tuple<int, int>(0, 0));
+            sucessRatio.Add("Python", new Tuple<int, int>(0, 0));
+            sucessRatio.Add("Ruby", new Tuple<int, int>(0, 0));
+        }
         public string ExecutePythonCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
@@ -68,23 +82,71 @@ namespace NLP_PAL_Project.Logic
             File.Delete(codePath);
             return runOutput;
         }
-        public async Task<string> ExecuteCSharpCode(string sourceCode)
+        public string ExecuteRubyCode(string sourceCode)
         {
+            string codePath = Path.Combine(Path.GetTempPath(), "TempRubyScript.rb");
+            File.WriteAllText(codePath, sourceCode);
+            Process rubyProcess = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "ruby",
+                    Arguments = codePath,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+            rubyProcess.Start();
+            string runOutput = rubyProcess.StandardOutput.ReadToEnd();
+            string runError = rubyProcess.StandardError.ReadToEnd();
+            rubyProcess.WaitForExit();
+
+            if (rubyProcess.ExitCode != 0)
+            {
+                // Execution failed
+                Console.WriteLine(runError);
+                return "Execution failed:\n" + runError;
+            }
+            File.Delete(codePath);
+            return runOutput;
+        }
+        public async Task<string> ExecuteCSharpCodeWithRoslyn(string sourceCode)
+        {
+           //Doesn't work, can't redirect STDOUT so can't anlyze code answer
+           //Any workaround way too complex and bug prone
             try
             {
-                ScriptOptions scriptOptions = ScriptOptions.Default.WithReferences(AppDomain.CurrentDomain.GetAssemblies())
-                .WithImports("System", "System.Linq", "System.Collections.Generic");
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                  .Where(assembly => !string.IsNullOrEmpty(assembly.Location))
+                  .Select(assembly => MetadataReference.CreateFromFile(assembly.Location));
+
+                ScriptOptions scriptOptions = ScriptOptions.Default
+                    .WithReferences(assemblies)
+                    .WithImports("System");
+
+                // Execute the initial script
+                 var script = CSharpScript.Create(sourceCode, scriptOptions);
                 string result = await CSharpScript.EvaluateAsync<string>(sourceCode, scriptOptions);
+
+                // Check if Main method needs to be called explicitly
+                if (result == null)
+                {
+                    result = await CSharpScript.EvaluateAsync<string>(sourceCode + "\nProgram.Main();", scriptOptions);
+                }
+
                 return result;
             }
             catch (CompilationErrorException e)
             {
-                return "Compilation error: " + e.Message;
+                return "Compilation error";
             }
             catch (Exception e)
             {
-                return "Execution error: " + e.Message;
+                return "Execution error";
             }
+
         }
     }
 
