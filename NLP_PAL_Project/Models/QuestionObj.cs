@@ -12,8 +12,20 @@ namespace NLP_PAL_Project.Models
         public string? RealQuestion { get; set; }
         public string? RealAnswer { get; set; }
         public Dictionary<Language, QuestionLanguageObj> LanguageObjects {get; set; }
+        
+       public override string ToString()
+        {
+            var languageObjectsString = new StringBuilder();
+            foreach (var kvp in LanguageObjects)
+            {
+                languageObjectsString.AppendLine($"{kvp.Key}: {kvp.Value}");
+            }
 
-        public QuestionObj(int id, string realQuestion, string realAnswer) 
+            return $"Id: {Id}, RealQuestion: {RealQuestion}, RealAnswer: {RealAnswer}, LanguageObjects: {languageObjectsString.ToString()}";
+        }
+    }
+        
+     public QuestionObj(int id, string realQuestion, string realAnswer) 
         {
             Id = id;
             RealQuestion = realQuestion;
