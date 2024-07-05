@@ -18,6 +18,15 @@ namespace NLP_PAL_Project
 {
     internal class CodeExecutor
     {
+        public Dictionary<string, Tuple<int, int>> sucessRatio;
+
+        public CodeExecutor()
+        {
+            sucessRatio= new Dictionary<string, Tuple<int, int>>(); //first: correct answers count, second: wrong answers count
+            sucessRatio.Add("Java Script", new Tuple<int, int>(0, 0));
+            sucessRatio.Add("Python", new Tuple<int, int>(0, 0));
+            sucessRatio.Add("Ruby", new Tuple<int, int>(0, 0));
+        }
         public string ExecutePythonCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
@@ -113,6 +122,7 @@ namespace NLP_PAL_Project
         public async Task<string> ExecuteCSharpCodeWithRoslyn(string sourceCode)
         {
            //Doesn't work, can't redirect STDOUT so can't anlyze code answer
+           //Any workaround way too complex and bug prone
             try
             {
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies()
