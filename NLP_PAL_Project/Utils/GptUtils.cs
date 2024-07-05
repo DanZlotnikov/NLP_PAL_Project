@@ -6,7 +6,7 @@ namespace NLP_PAL_Project.Utils.Utils
 {
     public class GptUtils
     {
-        public static StringContent GenerateGptRequestBody(QuestionObj param)
+        public static StringContent GenerateGptRequestBody(QuestionLanguageObj param)
         {
             StringContent stringContent = new(
                 System.Text.Json.JsonSerializer.Serialize(new
@@ -20,13 +20,13 @@ namespace NLP_PAL_Project.Utils.Utils
             return stringContent;
         }
 
-        public static List<GptRequestMessageObject> CreateMessageList(QuestionObj questionObj)
+        public static List<GptRequestMessageObject> CreateMessageList(QuestionLanguageObj questionObj)
         {
             List<GptRequestMessageObject> messages;
             messages = new List<GptRequestMessageObject> {
                new GptRequestMessageObject {
                    role = Consts.GptUserRole,
-                   content = string.Format($"{questionObj.ExampleQuestion} \n\n {questionObj.ExampleAnswer} \n\n {questionObj.RealQuestion}")
+                   content = string.Format($"{questionObj.ExampleQuestion} \n\n {questionObj.ExampleAnswer} \n\n ")
                }
             };
 

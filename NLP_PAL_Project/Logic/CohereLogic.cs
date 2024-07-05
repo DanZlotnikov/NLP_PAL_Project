@@ -6,27 +6,28 @@ namespace NLP_PAL_Project.Logic
 {
     public class CohereLogic : AILogic
     {
-        public async Task<dynamic> ProcessCompletionRequest(QuestionObj questionObj)
+        public async Task<bool> ProcessCompletionRequest(QuestionLanguageObj languageObj)
         {
             ApiCompletionResponse ret = new ApiCompletionResponse();
-            dynamic response = await GeneralUtils.PostRequest(Consts.BaseUrl, CohereUtils.GenerateCohereRequestBody(questionObj));
-            ret.Id = response["response_id"];
-            ret.Content = response["text"];
-            ret.FinishReason = response["finish_reason"];
-            ret.OriginalRequest = questionObj;
-            return ret;
+            dynamic response = await GeneralUtils.PostRequest(Consts.BaseUrl, CohereUtils.GenerateCohereRequestBody(languageObj));
+            languageObj.GeneratedAnswer = response["text"];
+            return true;
         }
 
-        public async Task<dynamic> GeneratePalAnswers(List<QuestionObj> questionObjs)
+        public async Task<bool[]> GeneratePalAnswers(List<QuestionObj> questionObjs)
         {
-            List<Task<dynamic>> taskList = new List<Task<dynamic>>();
+            List<Task<bool>> taskList = new List<Task<bool>>();
             // Send prompt to GPT and get code - Dan
             foreach (QuestionObj obj in questionObjs)
             {
-                Task<dynamic> task = ProcessCompletionRequest(obj);
-                taskList.Add(task);
+                foreach (KeyValuePair<Language, QuestionLanguageObj> languageObj in obj.LanguageObjects)
+                {
+                    Task<bool> task = ProcessCompletionRequest(languageObj.Value);
+                    taskList.Add(task);
+                }
+                
             }
-            dynamic[] results = await Task.WhenAll(taskList.ToArray());
+            bool[] results = await Task.WhenAll(taskList.ToArray());
             return results;
         }
     }

@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Gsm8k.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Gsm8k.cs" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
