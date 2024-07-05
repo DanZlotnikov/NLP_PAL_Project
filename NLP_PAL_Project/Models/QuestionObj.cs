@@ -23,7 +23,7 @@ namespace NLP_PAL_Project.Models
 
             return $"Id: {Id}, RealQuestion: {RealQuestion}, RealAnswer: {RealAnswer}, LanguageObjects: {languageObjectsString.ToString()}";
         }
-    }
+    
         
      public QuestionObj(int id, string realQuestion, string realAnswer) 
         {

@@ -9,11 +9,10 @@ namespace NLP_PAL_Project
         {
             Consts.Init();
             // Read all prompt data - Bar
-            //List<QuestionObj> questionObjs = await Gsm8k.ReadQuestionsFromJsonAsync("test.jsonl");
-            int pythonCorrect= 0,JSCorrect=0,rubyCorrect=0, total=0;
             (int correct, int incorrect, int error) pythonStats = (0, 0, 0);
             (int correct, int incorrect, int error) javaScriptStats = (0, 0, 0);
             (int correct, int incorrect, int error) rubyStats = (0, 0, 0);
+            int total = 0;
             List<QuestionObj> questionObjs = new List<QuestionObj>()
             {
                 new QuestionObj(1, "Jean has 30 lollipops. Jean eats 2 of the lollipops. With the remaining lollipops, Jean wants to package 2 lollipops in one bag. How many bags can Jean fill?", "14")
