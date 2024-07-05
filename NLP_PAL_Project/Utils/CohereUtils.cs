@@ -6,13 +6,13 @@ namespace NLP_PAL_Project.Utils
 {
     public class CohereUtils
     {
-        public static StringContent GenerateCohereRequestBody(QuestionObj questionObj)
+        public static StringContent GenerateCohereRequestBody(QuestionLanguageObj languageObj)
         {
             StringContent stringContent = new(
                 System.Text.Json.JsonSerializer.Serialize(new
                 {
-                    chat_history = CreateHistoryList(questionObj),
-                    message = questionObj.RealQuestion
+                    chat_history = CreateHistoryList(languageObj),
+                    message = languageObj.RealQuestion
                 }),
                 Encoding.UTF8,
                 "application/json"
@@ -20,7 +20,7 @@ namespace NLP_PAL_Project.Utils
             return stringContent;
         }
 
-        public static List<CohereRequestMessageObject> CreateHistoryList(QuestionObj questionObj)
+        public static List<CohereRequestMessageObject> CreateHistoryList(QuestionLanguageObj questionObj)
         {
             List<CohereRequestMessageObject> history;
             history = new List<CohereRequestMessageObject> {

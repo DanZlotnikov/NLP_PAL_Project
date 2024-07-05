@@ -1,4 +1,5 @@
-﻿using NLP_PAL_Project.Logic;
+﻿using Microsoft.CodeAnalysis.Scripting.Hosting;
+using NLP_PAL_Project.Logic;
 using NLP_PAL_Project.Models;
 namespace NLP_PAL_Project
 {
@@ -8,23 +9,23 @@ namespace NLP_PAL_Project
         {
             Consts.Init();
             // Read all prompt data - Bar
-            List<QuestionObj> questionObjs = await NLP_PAL_Project.Gsm8k.ReadQuestionsFromJsonAsync("test.jsonl");
-         
-
-            AILogic AI = new CohereLogic();
-            dynamic[] codeSnippets = await AI.GeneratePalAnswers(questionObjs);
+            //List<QuestionObj> questionObjs = await Gsm8k.ReadQuestionsFromJsonAsync("test.jsonl");
+            List<QuestionObj> questionObjs = new List<QuestionObj>()
+            {
+                new QuestionObj(1, "Jean has 30 lollipops. Jean eats 2 of the lollipops. With the remaining lollipops, Jean wants to package 2 lollipops in one bag. How many bags can Jean fill?", "14")
+            };
+            await new CohereLogic().GeneratePalAnswers(questionObjs);
 
             // Execute code on compilers - Denis
-            CodeExecutor codeExecutor= new CodeExecutor();
-            string pythonCode = "print(\"this is python code\")";
-            string JSCode = "console.log('this is java script code');";
-            string RubyCode = "print \"This is ruby code\"";
-            string pythonOutput = codeExecutor.ExecutePythonCode(pythonCode);
-            string JSOutput = codeExecutor.ExecuteJavaScriptCode(JSCode);
-            string RubyOutput = codeExecutor.ExecuteRubyCode(RubyCode);
-            Console.WriteLine(JSOutput);
-            Console.WriteLine(pythonOutput);
-            Console.WriteLine(RubyOutput);
+            foreach (QuestionObj questionObj in questionObjs)
+            {
+                CodeExecutor codeExecutor= new CodeExecutor();
+                string PythonOutput = await codeExecutor.ExecuteCSharpCode("print(1)");
+                string RubyOutput = await codeExecutor.ExecuteCSharpCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
+                string JSOutput = await codeExecutor.ExecuteCSharpCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
+                Console.WriteLine($"python: {PythonOutput} \nruby: {RubyOutput}, \njs: {JSOutput}");
+            }
+            Console.ReadLine();
             // Get answers from compilers and give scores to languages
 
             // Graphs, stats, etc.

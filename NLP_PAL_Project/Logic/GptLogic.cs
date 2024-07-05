@@ -1,32 +1,24 @@
 ﻿using NLP_PAL_Project.Models;
 using NLP_PAL_Project.Utils;
+using NLP_PAL_Project.Utils.Utils;
 
 namespace NLP_PAL_Project.Logic
 {
     public class GptLogic : AILogic
     {
-        public async Task<dynamic> ProcessCompletionRequest(QuestionObj questionObj)
+        public async Task<bool> ProcessCompletionRequest(QuestionLanguageObj questionObj)
         {
             ApiCompletionResponse ret = new ApiCompletionResponse();
-            dynamic response = await GeneralUtils.PostRequest(Consts.BaseUrl, CohereUtils.GenerateCohereRequestBody(questionObj));
+            dynamic response = await GeneralUtils.PostRequest(Consts.BaseUrl, GptUtils.GenerateGptRequestBody(questionObj));
             ret.Id = response["id"];
             ret.Content = response["choices"][0]["message"]["content"];
             ret.FinishReason = response["choices"][0]["finish_reason"];
-            ret.OriginalRequest = questionObj;
-            return ret;
+            return true;
         }
 
-        public async Task<dynamic> GeneratePalAnswers(List<QuestionObj> questionObjs)
+        public async Task<bool[]> GeneratePalAnswers(List<QuestionObj> questionObjs)
         {
-            List<Task<dynamic>> taskList = new List<Task<dynamic>>();
-            // Send prompt to GPT and get code - Dan
-            foreach (QuestionObj obj in questionObjs)
-            {
-                Task<dynamic> task = ProcessCompletionRequest(obj);
-                taskList.Add(task);
-            }
-            dynamic[] results = await Task.WhenAll(taskList.ToArray());
-            return results;
+            return new bool[] { };
         }
     }
 }

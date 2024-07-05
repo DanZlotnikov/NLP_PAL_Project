@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Text.Json;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLP_PAL_Project.Models;
 
 namespace NLP_PAL_Project
@@ -17,16 +21,7 @@ namespace NLP_PAL_Project
                 {
                     string line = await reader.ReadLineAsync();
                     var data = JsonSerializer.Deserialize<Dictionary<string, string>>(line);
-
-                    QuestionObj questionObj = new QuestionObj
-                    {
-                        Id = id,
-                        RealQuestion = data["question"],
-                        RealAnswer = data["answer"]
-                    };
-
-                    questionObjs.Add(questionObj);
-                    id++;
+                    questionObjs.Add(new QuestionObj(id++, data["question"], data["answer"]));
                 }
             }
             return questionObjs;
