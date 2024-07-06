@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLP_PAL_Project.Models;
 using NLP_PAL_Project.Utils;
+using System.Threading.Tasks;
 
 namespace NLP_PAL_Project.Logic
 {
@@ -20,17 +21,17 @@ namespace NLP_PAL_Project.Logic
             // Send prompt to GPT and get code - Dan
             foreach (QuestionObj obj in questionObjs)
             {
+                if (obj.Id % 20 == 0)
+                {
+                    await Task.WhenAll(taskList);
+                    taskList = new List<Task<bool>>();
+                    Thread.Sleep(60000);
+                }
                 foreach (KeyValuePair<Language, QuestionLanguageObj> languageObj in obj.LanguageObjects)
                 {
                     Task<bool> task = ProcessCompletionRequest(languageObj.Value);
                     taskList.Add(task);
                 }
-            }
-            List<List<Task<bool>>> splitTaskLists = GeneralUtils.SplitTasks(taskList, 60);
-            foreach (List<Task<bool>> tasks in splitTaskLists)
-            {
-                await Task.WhenAll(tasks);
-                Thread.Sleep(60000);
             }
             return true;
         }

@@ -24,7 +24,6 @@ namespace NLP_PAL_Project
                 (double answer,Boolean error) PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
                 (double answer, Boolean error) RubyOutput = await codeExecutor.ExecuteRubyCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
                 (double answer, Boolean error) JSOutput = await codeExecutor.ExecuteJavaScriptCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
-                Console.WriteLine($"python: {PythonOutput} \nruby: {RubyOutput}, \njs: {JSOutput}");
 
                 pythonStats = (PythonOutput.error ? (pythonStats.correct, pythonStats.incorrect, pythonStats.error + 1)
                     : PythonOutput.Item1 == questionObj.RealAnswer ? (pythonStats.correct + 1, pythonStats.incorrect, pythonStats.error)

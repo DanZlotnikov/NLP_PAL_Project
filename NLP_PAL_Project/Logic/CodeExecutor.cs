@@ -43,7 +43,6 @@ namespace NLP_PAL_Project.Logic
             if (pythonProcess.ExitCode != 0)
             {
                 // Execution failed
-                Console.WriteLine(runError);
                 return (-1, true);
             }
             File.Delete(codePath);
@@ -75,8 +74,6 @@ namespace NLP_PAL_Project.Logic
 
             if (JSProcess.ExitCode != 0)
             {
-                // Execution failed
-                Console.WriteLine(runError);
                 return (-1, true);
             }
             File.Delete(codePath);
@@ -108,7 +105,6 @@ namespace NLP_PAL_Project.Logic
             if (rubyProcess.ExitCode != 0)
             {
                 // Execution failed
-                Console.WriteLine(runError);
                 return (-1, true);
             }
             File.Delete(codePath);
