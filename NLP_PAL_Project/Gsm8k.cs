@@ -13,11 +13,13 @@ namespace NLP_PAL_Project
             using (StreamReader reader = new StreamReader(filePath))
             {
                 int id = 1;
-                while (!reader.EndOfStream)
+                while (!reader.EndOfStream && id < 10)
                 {
                     string line = await reader.ReadLineAsync();
                     var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(line);
-                    questionObjs.Add(new QuestionObj(id++, data["question"], data["answer"]));
+                    int answerIndex = data["answer"].IndexOf("####");
+                    string answer = data["answer"].Substring(answerIndex + 5);
+                    questionObjs.Add(new QuestionObj(id++, data["question"], answer));
                 }
             }
             return questionObjs;

@@ -8,15 +8,13 @@ namespace NLP_PAL_Project
         public static async Task Main(string[] args)
         {
             Consts.Init();
-            // Read all prompt data - Bar
+            
             (int correct, int incorrect, int error) pythonStats = (0, 0, 0);
             (int correct, int incorrect, int error) javaScriptStats = (0, 0, 0);
             (int correct, int incorrect, int error) rubyStats = (0, 0, 0);
             int total = 0;
-            List<QuestionObj> questionObjs = new List<QuestionObj>()
-            {
-                new QuestionObj(1, "Jean has 30 lollipops. Jean eats 2 of the lollipops. With the remaining lollipops, Jean wants to package 2 lollipops in one bag. How many bags can Jean fill?", "14")
-            };
+
+            List<QuestionObj> questionObjs = await Gsm8k.ReadQuestionsFromJsonAsync($"../../../{Consts.config["GSM"]["FilePath"].ToString()}");
             await new CohereLogic().GeneratePalAnswers(questionObjs);
 
             // Execute code on compilers - Denis

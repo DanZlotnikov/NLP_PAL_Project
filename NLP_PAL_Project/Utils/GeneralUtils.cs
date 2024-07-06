@@ -9,10 +9,15 @@ namespace NLP_PAL_Project.Utils
 {
     public class GeneralUtils
     {
+        public static int AccessKeyIndex = 0;
+
         public async static Task<dynamic> MakeRequest(HttpMethod method, string url, dynamic stringContent = null)
         {
+            // circulate access keys for increased limit
+            AccessKeyIndex = AccessKeyIndex == Consts.CohereAccessKeys.Count - 1 ? 0 : AccessKeyIndex + 1;
+
             using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Consts.GptAccessKey);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Consts.CohereAccessKeys[AccessKeyIndex]);
 
             if (method == HttpMethod.Get)
             {

@@ -8,10 +8,10 @@ namespace NLP_PAL_Project
         public static string? BaseUrl;
         public static string? MediaType;
         public static string? GptUserRole;
-        public static string? GptAccessKey;
+        public static List<string>? CohereAccessKeys;
 
         public static readonly string ExampleQuestion = "There were nine computers in the server room. Five more computers were installed each day, from monday to thursday. How many computers are now in the server room?";
-        public static readonly string UserIntro = "Write code that calculates the answer to the next question. Do not use any libraries in the code.";
+        public static readonly string UserIntro = "Write code that calculates the answer to the next question. Do not use any libraries in the code. Print only the final answer as a number.";
         public static readonly string BotIntro= "Got it. I will write code that does not use or import any libraries.";
 
         #region example answers
@@ -26,7 +26,7 @@ namespace NLP_PAL_Project
             BaseUrl = config["GPT"]["BaseUrl"];
             MediaType = config["GPT"]["MediaType"];
             GptUserRole = config["GPT"]["Roles"]["User"];
-            GptAccessKey = config["GPT"]["AccessKey"];
+            CohereAccessKeys = config["GPT"]["AccessKeys"].ToObject<List<string>>();
         }
     }
 
