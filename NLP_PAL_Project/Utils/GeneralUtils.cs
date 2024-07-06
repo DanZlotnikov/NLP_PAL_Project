@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -61,6 +62,19 @@ namespace NLP_PAL_Project.Utils
 
             // Try to convert the cleaned string to a double
             return double.TryParse(cleanedString, out result);
+        }
+
+        public static List<List<Task<bool>>> SplitTasks(List<Task<bool>> list, int size)
+        {
+            List<List<Task<bool>>> subLists = new List<List<Task<bool>>>();
+
+            for (int i = 0; i < list.Count; i += size)
+            {
+                List<Task<bool>> subList = list.GetRange(i, Math.Min(size, list.Count - i));
+                subLists.Add(subList);
+            }
+
+            return subLists;
         }
     }
 }

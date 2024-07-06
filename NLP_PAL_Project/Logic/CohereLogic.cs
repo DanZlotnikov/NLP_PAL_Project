@@ -14,7 +14,7 @@ namespace NLP_PAL_Project.Logic
             return true;
         }
 
-        public async Task<bool[]> GeneratePalAnswers(List<QuestionObj> questionObjs)
+        public async Task<bool> GeneratePalAnswers(List<QuestionObj> questionObjs)
         {
             List<Task<bool>> taskList = new List<Task<bool>>();
             // Send prompt to GPT and get code - Dan
@@ -25,10 +25,14 @@ namespace NLP_PAL_Project.Logic
                     Task<bool> task = ProcessCompletionRequest(languageObj.Value);
                     taskList.Add(task);
                 }
-                
             }
-            bool[] results = await Task.WhenAll(taskList.ToArray());
-            return results;
+            List<List<Task<bool>>> splitTaskLists = GeneralUtils.SplitTasks(taskList, 60);
+            foreach (List<Task<bool>> tasks in splitTaskLists)
+            {
+                await Task.WhenAll(tasks);
+                Thread.Sleep(60000);
+            }
+            return true;
         }
     }
 }

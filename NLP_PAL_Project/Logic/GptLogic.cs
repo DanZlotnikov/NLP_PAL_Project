@@ -16,9 +16,9 @@ namespace NLP_PAL_Project.Logic
             return true;
         }
 
-        public async Task<bool[]> GeneratePalAnswers(List<QuestionObj> questionObjs)
+        public async Task<bool> GeneratePalAnswers(List<QuestionObj> questionObjs)
         {
-            return new bool[] { };
+            return true;
         }
     }
 }
