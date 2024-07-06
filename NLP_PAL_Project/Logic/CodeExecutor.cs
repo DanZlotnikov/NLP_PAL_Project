@@ -36,13 +36,23 @@ namespace NLP_PAL_Project.Logic
             };
 
             pythonProcess.Start();
-            string runOutput = pythonProcess.StandardOutput.ReadToEnd();
-            string runError = pythonProcess.StandardError.ReadToEnd();
-            pythonProcess.WaitForExit();
-
-            if (pythonProcess.ExitCode != 0)
+            string runOutput = "", errorOutput = "";
+            var runTask = Task.Run(() => pythonProcess.StandardOutput.ReadToEnd());
+            var errorTask = Task.Run(() => pythonProcess.StandardOutput.ReadToEnd());
+            if (runTask.Wait(TimeSpan.FromSeconds(2)) && errorTask.Wait(TimeSpan.FromSeconds(2)))
             {
-                // Execution failed
+                runOutput = runTask.Result;
+                errorOutput = errorTask.Result;
+                pythonProcess.WaitForExit();
+                if (pythonProcess.ExitCode != 0)
+                {
+                    return (-1, true);
+                }
+            }
+            else
+            {
+                pythonProcess.Kill();
+                Console.WriteLine("Timed out");
                 return (-1, true);
             }
             File.Delete(codePath);
@@ -68,16 +78,28 @@ namespace NLP_PAL_Project.Logic
             };
 
             JSProcess.Start();
-            string runOutput = JSProcess.StandardOutput.ReadToEnd();
-            string runError = JSProcess.StandardError.ReadToEnd();
-            JSProcess.WaitForExit();
-
-            if (JSProcess.ExitCode != 0)
+            string runOutput = "", errorOutput = "";
+            double numberOutput = 0;
+            var runTask = Task.Run(() => JSProcess.StandardOutput.ReadToEnd());
+            var errorTask = Task.Run(() => JSProcess.StandardOutput.ReadToEnd());
+            if (runTask.Wait(TimeSpan.FromSeconds(2)) && errorTask.Wait(TimeSpan.FromSeconds(2))) 
             {
+                runOutput = runTask.Result;
+                errorOutput = errorTask.Result;
+                JSProcess.WaitForExit();
+                if (JSProcess.ExitCode != 0)
+                {
+                    return (-1, true);
+                }
+            }
+            else
+            {
+                JSProcess.Kill();
+                Console.WriteLine("Timed out");
                 return (-1, true);
+
             }
             File.Delete(codePath);
-            double numberOutput = 0;
             GeneralUtils.TryCleanAndConvertToDouble(runOutput, out numberOutput);
             return (numberOutput, false);
         }
@@ -98,15 +120,26 @@ namespace NLP_PAL_Project.Logic
                 }
             };
             rubyProcess.Start();
-            string runOutput = rubyProcess.StandardOutput.ReadToEnd();
-            string runError = rubyProcess.StandardError.ReadToEnd();
-            rubyProcess.WaitForExit();
-
-            if (rubyProcess.ExitCode != 0)
+            string runOutput = "", errorOutput = "";
+            var runTask = Task.Run(() => rubyProcess.StandardOutput.ReadToEnd());
+            var errorTask = Task.Run(() => rubyProcess.StandardOutput.ReadToEnd());
+            if (runTask.Wait(TimeSpan.FromSeconds(2)) && errorTask.Wait(TimeSpan.FromSeconds(2)))
             {
-                // Execution failed
+                runOutput = runTask.Result;
+                errorOutput = errorTask.Result;
+                rubyProcess.WaitForExit();
+                if (rubyProcess.ExitCode != 0)
+                {
+                    return (-1, true);
+                }
+            }
+            else
+            {
+                rubyProcess.Kill();
+                Console.WriteLine("Timed out");
                 return (-1, true);
             }
+
             File.Delete(codePath);
             double numberOutput = 0;
             GeneralUtils.TryCleanAndConvertToDouble(runOutput, out numberOutput);

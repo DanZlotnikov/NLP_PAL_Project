@@ -8,7 +8,7 @@ namespace NLP_PAL_Project
         public static async Task Main(string[] args)
         {
             Consts.Init();
-            
+
             (int correct, int incorrect, int error) pythonStats = (0, 0, 0);
             (int correct, int incorrect, int error) javaScriptStats = (0, 0, 0);
             (int correct, int incorrect, int error) rubyStats = (0, 0, 0);
@@ -21,7 +21,7 @@ namespace NLP_PAL_Project
             foreach (QuestionObj questionObj in questionObjs)
             {
                 CodeExecutor codeExecutor = new CodeExecutor();
-                (double answer,Boolean error) PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
+                (double answer, Boolean error) PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
                 (double answer, Boolean error) RubyOutput = await codeExecutor.ExecuteRubyCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
                 (double answer, Boolean error) JSOutput = await codeExecutor.ExecuteJavaScriptCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
 
@@ -37,6 +37,7 @@ namespace NLP_PAL_Project
                 total++;
 
             }
+            Console.WriteLine($"python: {pythonStats}; js: {javaScriptStats}; ruby: {rubyStats}");
             Console.ReadLine();
             // Get answers from compilers and give scores to languages
 

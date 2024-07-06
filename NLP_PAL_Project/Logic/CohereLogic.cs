@@ -14,6 +14,7 @@ namespace NLP_PAL_Project.Logic
             try
             {
                 languageObj.GeneratedAnswer = response["text"];
+                Console.WriteLine($"{languageObj.RealQuestion} - answered");
             }
             catch (Exception e)
             {
@@ -24,24 +25,18 @@ namespace NLP_PAL_Project.Logic
 
         public async Task<bool> GeneratePalAnswers(List<QuestionObj> questionObjs)
         {
-            List<Task<bool>> taskList = new List<Task<bool>>();
             // Send prompt to GPT and get code - Dan
             foreach (QuestionObj obj in questionObjs)
             {
-                if (taskList.Count > 10 * (Consts.CohereAccessKeys.Count - 1))
-                {
-                    await Task.WhenAll(taskList);
-                    taskList = new List<Task<bool>>();
-                    Thread.Sleep(60000);
-                }
+                List<Task<bool>> taskList = new List<Task<bool>>();
                 foreach (KeyValuePair<Language, QuestionLanguageObj> languageObj in obj.LanguageObjects)
                 {
-                    Task<bool> task = ProcessCompletionRequest(languageObj.Value);
+                    Task<bool> task = Task.Run(() => ProcessCompletionRequest(languageObj.Value));
                     taskList.Add(task);
                 }
+                await Task.WhenAll(taskList);
+                taskList = new List<Task<bool>>();
             }
-            Thread.Sleep(60000);
-            await Task.WhenAll(taskList);
             return true;
         }
     }

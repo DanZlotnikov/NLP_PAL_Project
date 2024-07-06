@@ -16,8 +16,8 @@ namespace NLP_PAL_Project.Utils
         public async static Task<dynamic> MakeRequest(HttpMethod method, string url, dynamic stringContent = null)
         {
             // circulate access keys for increased limit
-            AccessKeyIndex = AccessKeyIndex == Consts.CohereAccessKeys.Count - 1 ? 0 : AccessKeyIndex + 1;
-
+            AccessKeyIndex = AccessKeyIndex >= Consts.CohereAccessKeys.Count - 2 ? 0 : AccessKeyIndex + 1;
+            Console.WriteLine(AccessKeyIndex);
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Consts.CohereAccessKeys[AccessKeyIndex]);
 
