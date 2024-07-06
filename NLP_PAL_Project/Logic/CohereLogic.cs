@@ -11,7 +11,14 @@ namespace NLP_PAL_Project.Logic
         {
             ApiCompletionResponse ret = new ApiCompletionResponse();
             dynamic response = await GeneralUtils.PostRequest(Consts.BaseUrl, CohereUtils.GenerateCohereRequestBody(languageObj));
-            languageObj.GeneratedAnswer = response["text"];
+            try
+            {
+                languageObj.GeneratedAnswer = response["text"];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return true;
         }
 
@@ -21,7 +28,7 @@ namespace NLP_PAL_Project.Logic
             // Send prompt to GPT and get code - Dan
             foreach (QuestionObj obj in questionObjs)
             {
-                if (obj.Id % 20 == 0)
+                if (taskList.Count > 10 * (Consts.CohereAccessKeys.Count - 1))
                 {
                     await Task.WhenAll(taskList);
                     taskList = new List<Task<bool>>();
@@ -33,6 +40,8 @@ namespace NLP_PAL_Project.Logic
                     taskList.Add(task);
                 }
             }
+            Thread.Sleep(60000);
+            await Task.WhenAll(taskList);
             return true;
         }
     }

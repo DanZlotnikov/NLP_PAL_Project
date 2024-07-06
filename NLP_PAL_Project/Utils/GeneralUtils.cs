@@ -28,12 +28,20 @@ namespace NLP_PAL_Project.Utils
             }
             else if (method == HttpMethod.Post)
             {
-                var response = await client.PostAsync(
-                    url,
-                    stringContent
-                );
-                var jsonString = await response.Content.ReadAsStringAsync();
-                dynamic ret = JsonConvert.DeserializeObject<dynamic>(jsonString.ToString());
+                dynamic ret = null;
+                try
+                {
+                    var response = await client.PostAsync(
+                        url,
+                        stringContent
+                    );
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    ret = JsonConvert.DeserializeObject<dynamic>(jsonString.ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
                 return ret;
             }
             else
