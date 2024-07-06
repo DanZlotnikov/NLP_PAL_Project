@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -48,6 +49,18 @@ namespace NLP_PAL_Project.Utils
         public async static Task<dynamic> PostRequest(string url, StringContent stringContent)
         {
             return await MakeRequest(HttpMethod.Post, url, stringContent);
+        }
+
+        public static bool TryCleanAndConvertToDouble(string input, out double result)
+        {
+            // Define the pattern to match any non-numeric characters except for the period and space
+            string pattern = @"[^0-9.]";
+
+            // Use Regex.Replace to replace all special characters with an empty string
+            string cleanedString = Regex.Replace(input, pattern, string.Empty);
+
+            // Try to convert the cleaned string to a double
+            return double.TryParse(cleanedString, out result);
         }
     }
 }

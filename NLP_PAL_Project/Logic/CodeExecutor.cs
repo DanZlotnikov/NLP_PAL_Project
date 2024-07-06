@@ -6,6 +6,8 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
+using ScottPlot.Colormaps;
+using NLP_PAL_Project.Utils;
 
 namespace NLP_PAL_Project.Logic
 {
@@ -16,7 +18,7 @@ namespace NLP_PAL_Project.Logic
         {
            
         }
-        public async Task<(string, Boolean)> ExecutePythonCode(string sourceCode)
+        public async Task<(double, Boolean)> ExecutePythonCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempPythonScript.py");
             File.WriteAllText(codePath, sourceCode);
@@ -42,12 +44,14 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return ("Execution failed:\n" + runError, true);
+                return (-1, true);
             }
             File.Delete(codePath);
-            return (runOutput,false);
+            double numberOutput = 0;
+            GeneralUtils.TryCleanAndConvertToDouble(runOutput, out numberOutput);
+            return (numberOutput, false);
         }
-        public async Task<(string, Boolean)> ExecuteJavaScriptCode(string sourceCode)
+        public async Task<(double, Boolean)> ExecuteJavaScriptCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempJavaScript.js");
             File.WriteAllText(codePath, sourceCode);
@@ -73,12 +77,14 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return ("Execution failed:\n" + runError, true);
+                return (-1, true);
             }
             File.Delete(codePath);
-            return (runOutput, false);
+            double numberOutput = 0;
+            GeneralUtils.TryCleanAndConvertToDouble(runOutput, out numberOutput);
+            return (numberOutput, false);
         }
-        public async Task<(string, Boolean)> ExecuteRubyCode(string sourceCode)
+        public async Task<(double, Boolean)> ExecuteRubyCode(string sourceCode)
         {
             string codePath = Path.Combine(Path.GetTempPath(), "TempRubyScript.rb");
             File.WriteAllText(codePath, sourceCode);
@@ -103,10 +109,12 @@ namespace NLP_PAL_Project.Logic
             {
                 // Execution failed
                 Console.WriteLine(runError);
-                return ("Execution failed:\n" + runError, true);
+                return (-1, true);
             }
             File.Delete(codePath);
-            return (runOutput, false);
+            double numberOutput = 0;
+            GeneralUtils.TryCleanAndConvertToDouble(runOutput, out numberOutput);
+            return (numberOutput, false);
         }
         public async Task<string> ExecuteCSharpCodeWithRoslyn(string sourceCode)
         {

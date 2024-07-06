@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using NLP_PAL_Project.Models;
 using System.Text.Json;
+using NLP_PAL_Project.Utils;
+
 namespace NLP_PAL_Project
 {
     public class Gsm8k
@@ -13,13 +15,15 @@ namespace NLP_PAL_Project
             using (StreamReader reader = new StreamReader(filePath))
             {
                 int id = 1;
-                while (!reader.EndOfStream && id < 10)
+                while (!reader.EndOfStream && id < 100)
                 {
                     string line = await reader.ReadLineAsync();
                     var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(line);
                     int answerIndex = data["answer"].IndexOf("####");
                     string answer = data["answer"].Substring(answerIndex + 5);
-                    questionObjs.Add(new QuestionObj(id++, data["question"], answer));
+                    double numberAnswer = 0;
+                    GeneralUtils.TryCleanAndConvertToDouble(answer, out numberAnswer);
+                    questionObjs.Add(new QuestionObj(id++, data["question"], numberAnswer));
                 }
             }
             return questionObjs;

@@ -20,10 +20,10 @@ namespace NLP_PAL_Project
             // Execute code on compilers - Denis
             foreach (QuestionObj questionObj in questionObjs)
             {
-                CodeExecutor codeExecutor= new CodeExecutor();
-                (string answer,Boolean error) PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
-                (string answer, Boolean error) RubyOutput = await codeExecutor.ExecuteRubyCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
-                (string answer, Boolean error) JSOutput = await codeExecutor.ExecuteJavaScriptCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
+                CodeExecutor codeExecutor = new CodeExecutor();
+                (double answer,Boolean error) PythonOutput = await codeExecutor.ExecutePythonCode(questionObj.LanguageObjects[Language.Python].GeneratedAnswer);
+                (double answer, Boolean error) RubyOutput = await codeExecutor.ExecuteRubyCode(questionObj.LanguageObjects[Language.Ruby].GeneratedAnswer);
+                (double answer, Boolean error) JSOutput = await codeExecutor.ExecuteJavaScriptCode(questionObj.LanguageObjects[Language.JS].GeneratedAnswer);
                 Console.WriteLine($"python: {PythonOutput} \nruby: {RubyOutput}, \njs: {JSOutput}");
 
                 pythonStats = (PythonOutput.error ? (pythonStats.correct, pythonStats.incorrect, pythonStats.error + 1)

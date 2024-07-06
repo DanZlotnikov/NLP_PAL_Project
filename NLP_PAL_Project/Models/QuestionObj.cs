@@ -10,7 +10,7 @@ namespace NLP_PAL_Project.Models
     {
         public int Id { get; set; }
         public string? RealQuestion { get; set; }
-        public string? RealAnswer { get; set; }
+        public double? RealAnswer { get; set; }
         public Dictionary<Language, QuestionLanguageObj> LanguageObjects {get; set; }
         
        public override string ToString()
@@ -25,7 +25,7 @@ namespace NLP_PAL_Project.Models
         }
     
         
-     public QuestionObj(int id, string realQuestion, string realAnswer) 
+     public QuestionObj(int id, string realQuestion, double realAnswer) 
         {
             Id = id;
             RealQuestion = realQuestion;
