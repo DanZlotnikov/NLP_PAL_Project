@@ -15,7 +15,7 @@ namespace NLP_PAL_Project
             using (StreamReader reader = new StreamReader(filePath))
             {
                 int id = 1;
-                while (!reader.EndOfStream && id < 100)
+                while (!reader.EndOfStream)
                 {
                     string line = await reader.ReadLineAsync();
                     var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(line);
