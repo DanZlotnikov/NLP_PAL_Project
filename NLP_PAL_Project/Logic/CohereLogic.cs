@@ -14,7 +14,6 @@ namespace NLP_PAL_Project.Logic
             try
             {
                 languageObj.GeneratedAnswer = response["text"];
-                Console.WriteLine($"{languageObj.RealQuestion} - answered");
             }
             catch (Exception e)
             {
@@ -28,6 +27,7 @@ namespace NLP_PAL_Project.Logic
             // Send prompt to GPT and get code - Dan
             foreach (QuestionObj obj in questionObjs)
             {
+                Console.WriteLine($"Generating code for question #{obj.Id}");
                 List<Task<bool>> taskList = new List<Task<bool>>();
                 foreach (KeyValuePair<Language, QuestionLanguageObj> languageObj in obj.LanguageObjects)
                 {

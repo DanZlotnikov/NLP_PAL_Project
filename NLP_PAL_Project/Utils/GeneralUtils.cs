@@ -17,7 +17,6 @@ namespace NLP_PAL_Project.Utils
         {
             // circulate access keys for increased limit
             AccessKeyIndex = AccessKeyIndex >= Consts.CohereAccessKeys.Count - 2 ? 0 : AccessKeyIndex + 1;
-            Console.WriteLine(AccessKeyIndex);
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Consts.CohereAccessKeys[AccessKeyIndex]);
 

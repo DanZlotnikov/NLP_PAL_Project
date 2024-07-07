@@ -52,7 +52,6 @@ namespace NLP_PAL_Project.Logic
             else
             {
                 pythonProcess.Kill();
-                Console.WriteLine("Timed out");
                 return (-1, true, true);
             }
             File.Delete(codePath);
@@ -95,7 +94,6 @@ namespace NLP_PAL_Project.Logic
             else
             {
                 JSProcess.Kill();
-                Console.WriteLine("Timed out");
                 return (-1, true, true);
 
             }
@@ -136,7 +134,6 @@ namespace NLP_PAL_Project.Logic
             else
             {
                 rubyProcess.Kill();
-                Console.WriteLine("Timed out");
                 return (-1, true, true);
             }
 
